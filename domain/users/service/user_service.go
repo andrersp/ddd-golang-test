@@ -35,7 +35,7 @@ func (u *userService) GetById(userID uint) (user *model.User, err error) {
 	return
 }
 
-func NewService(repository repository.UserRespository) UserService {
+func NewUserService(repository repository.UserRespository) UserService {
 	return &userService{
 		repository: repository,
 	}

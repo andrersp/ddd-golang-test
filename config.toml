@@ -1,0 +1,7 @@
+# This is configuration to connect with db
+
+user="golang"
+password="golang"
+host="localhost"
+port="5432"
+dbname="golang"
