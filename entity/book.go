@@ -1,4 +1,4 @@
-package model
+package entity
 
 type Book struct {
 	ID    uint   `json:"id"`

@@ -1,8 +1,10 @@
 package repository
 
-import "sistema/domain/users/model"
+import (
+	"sistema/entity"
+)
 
 type UserRespository interface {
-	GetById(userID uint) (*model.User, error)
-	Create(user model.User) (*model.User, error)
+	GetById(userID uint) (*entity.User, error)
+	Create(user entity.User) (*entity.User, error)
 }
