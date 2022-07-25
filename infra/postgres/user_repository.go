@@ -1,35 +1,36 @@
 package postgres
 
 import (
-	"sistema/entity"
+	"sistema/domain"
+	"sistema/domain/repository"
 
 	"gorm.io/gorm"
 )
 
 type DBUserRepository interface {
-	GetById(userID uint) (*entity.User, error)
-	Create(user entity.User) (*entity.User, error)
+	GetById(userID uint) (*domain.User, error)
+	Create(user domain.User) (*domain.User, error)
 }
 
 type dbUserRepository struct {
 	db *gorm.DB
 }
 
-func NewDbUserRepository(db *gorm.DB) DBUserRepository {
+func NewDbUserRepository(db *gorm.DB) repository.UserRespository {
 	return &dbUserRepository{
 		db: db,
 	}
 }
 
-func (r *dbUserRepository) Create(user entity.User) (*entity.User, error) {
+func (r *dbUserRepository) Create(user domain.User) (*domain.User, error) {
 
-	r.db.Model(&entity.User{}).Create(&user)
+	r.db.Model(&domain.User{}).Create(&user)
 
 	// fmt.Println(user)
 
 	return nil, nil
 }
 
-func (r *dbUserRepository) GetById(userID uint) (*entity.User, error) {
+func (r *dbUserRepository) GetById(userID uint) (*domain.User, error) {
 	return nil, nil
 }

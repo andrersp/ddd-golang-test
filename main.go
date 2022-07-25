@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 	"sistema/config"
+	"sistema/domain"
 	"sistema/services"
 
-	"sistema/entity"
 	"sistema/infra/postgres"
 )
 
@@ -24,7 +24,7 @@ func main() {
 
 	userHandler := services.NewUserService(postgres.NewDbUserRepository(conn))
 
-	user := entity.User{
+	user := domain.User{
 		Name: "Nome Usuario",
 		Age:  11,
 	}
@@ -33,10 +33,10 @@ func main() {
 
 	bookHandler := services.NewBookService(postgres.NewDbBookRepository(conn))
 
-	books := []entity.Book{}
+	books := []domain.Book{}
 
 	for i := 1; i < 500; i++ {
-		books = append(books, entity.Book{Title: fmt.Sprintf("Titulo livro %d", i)})
+		books = append(books, domain.Book{Title: fmt.Sprintf("Titulo livro %d", i)})
 
 	}
 
@@ -46,6 +46,16 @@ func main() {
 			fmt.Println(err)
 		} else {
 			fmt.Printf("Livro Cadastrado: %s\n", result.Title)
+		}
+
+	}
+
+	for i := 1; i < 500; i++ {
+		book, err := bookHandler.GetById(uint(i))
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			fmt.Println(*&book.Title)
 		}
 
 	}

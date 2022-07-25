@@ -2,7 +2,8 @@ package postgres
 
 import (
 	"errors"
-	"sistema/entity"
+	"sistema/domain"
+	"sistema/domain/repository"
 
 	"gorm.io/gorm"
 )
@@ -11,18 +12,20 @@ type dbBookRepository struct {
 	db *gorm.DB
 }
 
-func (r *dbBookRepository) GetById(bookID uint) (*entity.Book, error) {
-	return nil, nil
+func (r *dbBookRepository) GetById(bookID uint) (book *domain.Book, err error) {
+
+	err = r.db.First(&book, bookID).Error
+	return
 }
 
-func (r *dbBookRepository) Create(book entity.Book) (*entity.Book, error) {
+func (r *dbBookRepository) Create(book domain.Book) (*domain.Book, error) {
 
-	r.db.Model(&entity.Book{}).Create(&book)
+	r.db.Model(&domain.Book{}).Create(&book)
 
 	return &book, nil
 }
 
-func (r *dbBookRepository) GetByTitle(title string) (book *entity.Book, err error) {
+func (r *dbBookRepository) GetByTitle(title string) (book *domain.Book, err error) {
 
 	err = r.db.Where("title = ?", title).First(&book).Error
 
@@ -35,7 +38,7 @@ func (r *dbBookRepository) GetByTitle(title string) (book *entity.Book, err erro
 	return
 }
 
-func NewDbBookRepository(db *gorm.DB) *dbBookRepository {
+func NewDbBookRepository(db *gorm.DB) repository.BookRepository {
 	return &dbBookRepository{
 		db: db,
 	}

@@ -3,20 +3,26 @@ package services
 import (
 	"errors"
 
-	"sistema/domain/book"
-	"sistema/entity"
+	"sistema/domain"
+	"sistema/domain/repository"
 )
 
 type bookService struct {
-	repository book.BookRepository
+	repository repository.BookRepository
 }
 
-func (b *bookService) GetById(bookID uint) (*entity.Book, error) {
+func (b *bookService) GetById(bookID uint) (*domain.Book, error) {
 
-	return nil, nil
+	book, err := b.repository.GetById(bookID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return book, nil
 }
 
-func (b *bookService) Create(book entity.Book) (*entity.Book, error) {
+func (b *bookService) Create(book domain.Book) (*domain.Book, error) {
 
 	if book, _ := b.repository.GetByTitle(book.Title); book != nil {
 		return nil, errors.New("Book Exist")
@@ -32,11 +38,11 @@ func (b *bookService) Create(book entity.Book) (*entity.Book, error) {
 	return &book, nil
 }
 
-func (b *bookService) GetByTitle(title string) (*entity.Book, error) {
+func (b *bookService) GetByTitle(title string) (*domain.Book, error) {
 	return nil, nil
 }
 
-func NewBookService(repository book.BookRepository) *bookService {
+func NewBookService(repository repository.BookRepository) *bookService {
 	return &bookService{
 		repository: repository,
 	}

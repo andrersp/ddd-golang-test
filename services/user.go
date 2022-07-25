@@ -3,16 +3,15 @@ package services
 import (
 	"errors"
 
-	"sistema/domain/user"
-
-	"sistema/entity"
+	"sistema/domain"
+	"sistema/domain/repository"
 )
 
 type UserService struct {
-	repository user.UserRespository
+	repository repository.UserRespository
 }
 
-func (u *UserService) Create(user entity.User) (*entity.User, error) {
+func (u *UserService) Create(user domain.User) (*domain.User, error) {
 
 	if err := user.ValidateUser(); err != nil {
 		return nil, err
@@ -21,7 +20,7 @@ func (u *UserService) Create(user entity.User) (*entity.User, error) {
 	return u.repository.Create(user)
 }
 
-func (u *UserService) GetById(userID uint) (user *entity.User, err error) {
+func (u *UserService) GetById(userID uint) (user *domain.User, err error) {
 
 	user, err = u.repository.GetById(userID)
 
@@ -32,7 +31,7 @@ func (u *UserService) GetById(userID uint) (user *entity.User, err error) {
 	return
 }
 
-func NewUserService(repository user.UserRespository) *UserService {
+func NewUserService(repository repository.UserRespository) *UserService {
 	return &UserService{
 		repository: repository,
 	}

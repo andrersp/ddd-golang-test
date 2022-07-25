@@ -1,4 +1,4 @@
-package entity
+package domain
 
 type Book struct {
 	ID    uint   `json:"id"`
