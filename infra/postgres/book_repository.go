@@ -7,12 +7,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type DBBookRepository interface {
-	GetById(bookID uint) (*entity.Book, error)
-	Create(book entity.Book) (*entity.Book, error)
-	GetByTitle(title string) (*entity.Book, error)
-}
-
 type dbBookRepository struct {
 	db *gorm.DB
 }
@@ -41,7 +35,7 @@ func (r *dbBookRepository) GetByTitle(title string) (book *entity.Book, err erro
 	return
 }
 
-func NewDbBookRepository(db *gorm.DB) DBBookRepository {
+func NewDbBookRepository(db *gorm.DB) *dbBookRepository {
 	return &dbBookRepository{
 		db: db,
 	}

@@ -1,19 +1,14 @@
-package service
+package services
 
 import (
 	"errors"
-	"sistema/domain/books/repository"
+
+	"sistema/domain/book"
 	"sistema/entity"
 )
 
-type BookService interface {
-	GetById(bookID uint) (*entity.Book, error)
-	Create(book entity.Book) (*entity.Book, error)
-	GetByTitle(title string) (*entity.Book, error)
-}
-
 type bookService struct {
-	repository repository.BookRepository
+	repository book.BookRepository
 }
 
 func (b *bookService) GetById(bookID uint) (*entity.Book, error) {
@@ -41,7 +36,7 @@ func (b *bookService) GetByTitle(title string) (*entity.Book, error) {
 	return nil, nil
 }
 
-func NewBookService(repository repository.BookRepository) BookService {
+func NewBookService(repository book.BookRepository) *bookService {
 	return &bookService{
 		repository: repository,
 	}

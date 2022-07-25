@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 	"sistema/config"
-	book "sistema/domain/books/service"
-	user "sistema/domain/users/service"
+	"sistema/services"
+
 	"sistema/entity"
 	"sistema/infra/postgres"
 )
@@ -13,14 +13,16 @@ import (
 func main() {
 	fmt.Println("start")
 
-	conn, err := config.ConnectDB()
+	conn, err := config.ConnectDBSQLITE()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	config.DBMigrate()
+	if err := config.DBMigrate(*conn); err != nil {
+		log.Fatal(err)
+	}
 
-	userHandler := user.NewUserService(postgres.NewDbUserRepository(conn))
+	userHandler := services.NewUserService(postgres.NewDbUserRepository(conn))
 
 	user := entity.User{
 		Name: "Nome Usuario",
@@ -29,7 +31,7 @@ func main() {
 
 	userHandler.Create(user)
 
-	bookHandler := book.NewBookService(postgres.NewDbBookRepository(conn))
+	bookHandler := services.NewBookService(postgres.NewDbBookRepository(conn))
 
 	books := []entity.Book{}
 
@@ -43,7 +45,7 @@ func main() {
 		if err != nil {
 			fmt.Println(err)
 		} else {
-			fmt.Printf("Livro Cadastrado: %s", result.Title)
+			fmt.Printf("Livro Cadastrado: %s\n", result.Title)
 		}
 
 	}

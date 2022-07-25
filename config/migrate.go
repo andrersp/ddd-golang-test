@@ -6,15 +6,10 @@ import (
 	"gorm.io/gorm"
 )
 
-func DBMigrate() (*gorm.DB, error) {
+func DBMigrate(db gorm.DB) (err error) {
 
-	conn, err := ConnectDB()
+	err = db.AutoMigrate(entity.Book{}, entity.User{})
 
-	if err != nil {
-		return nil, err
-	}
-	conn.AutoMigrate(entity.Book{}, entity.User{})
-
-	return conn, nil
+	return
 
 }
