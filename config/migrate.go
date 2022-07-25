@@ -1,8 +1,7 @@
 package config
 
 import (
-	book_model "sistema/domain/books/model"
-	user_model "sistema/domain/users/model"
+	"sistema/entity"
 
 	"gorm.io/gorm"
 )
@@ -14,7 +13,7 @@ func DBMigrate() (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	conn.AutoMigrate(book_model.Book{}, user_model.User{})
+	conn.AutoMigrate(entity.Book{}, entity.User{})
 
 	return conn, nil
 

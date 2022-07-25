@@ -1,8 +1,11 @@
 package repository
 
-import "sistema/domain/books/model"
+import (
+	"sistema/entity"
+)
 
 type BookRepository interface {
-	GetById(bookID uint) (*model.Book, error)
-	Create(book model.Book) (*model.Book, error)
+	GetById(bookID uint) (*entity.Book, error)
+	Create(book entity.Book) (*entity.Book, error)
+	GetByTitle(title string) (*entity.Book, error)
 }

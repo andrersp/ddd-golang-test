@@ -4,10 +4,9 @@ import (
 	"fmt"
 	"log"
 	"sistema/config"
-	"sistema/domain/books/model"
 	book "sistema/domain/books/service"
-	user_model "sistema/domain/users/model"
 	user "sistema/domain/users/service"
+	"sistema/entity"
 	"sistema/infra/postgres"
 )
 
@@ -21,9 +20,9 @@ func main() {
 
 	config.DBMigrate()
 
-	userHandler := user.NewUserService(postgres.NewDbUserRepository())
+	userHandler := user.NewUserService(postgres.NewDbUserRepository(conn))
 
-	user := user_model.User{
+	user := entity.User{
 		Name: "Nome Usuario",
 		Age:  11,
 	}
@@ -32,23 +31,21 @@ func main() {
 
 	bookHandler := book.NewBookService(postgres.NewDbBookRepository(conn))
 
-	books := []model.Book{
-		{
-			Title: "Titulo do Livro 1",
-		},
-		{
-			Title: "Titulo do Livro 2",
-		},
-		{
-			Title: "Titulo do Livro 4",
-		},
-		{
-			Title: "Titulo do Livro 4",
-		},
+	books := []entity.Book{}
+
+	for i := 1; i < 500; i++ {
+		books = append(books, entity.Book{Title: fmt.Sprintf("Titulo livro %d", i)})
+
 	}
 
 	for _, book := range books {
-		bookHandler.Create(book)
+		result, err := bookHandler.Create(book)
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			fmt.Printf("Livro Cadastrado: %s", result.Title)
+		}
+
 	}
 
 }

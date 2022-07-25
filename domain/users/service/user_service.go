@@ -2,20 +2,20 @@ package service
 
 import (
 	"errors"
-	"sistema/domain/users/model"
 	"sistema/domain/users/repository"
+	"sistema/entity"
 )
 
 type UserService interface {
-	GetById(userID uint) (*model.User, error)
-	Create(user model.User) (*model.User, error)
+	GetById(userID uint) (*entity.User, error)
+	Create(user entity.User) (*entity.User, error)
 }
 
 type userService struct {
 	repository repository.UserRespository
 }
 
-func (u *userService) Create(user model.User) (*model.User, error) {
+func (u *userService) Create(user entity.User) (*entity.User, error) {
 
 	if err := user.ValidateUser(); err != nil {
 		return nil, err
@@ -24,7 +24,7 @@ func (u *userService) Create(user model.User) (*model.User, error) {
 	return u.repository.Create(user)
 }
 
-func (u *userService) GetById(userID uint) (user *model.User, err error) {
+func (u *userService) GetById(userID uint) (user *entity.User, err error) {
 
 	user, err = u.repository.GetById(userID)
 
